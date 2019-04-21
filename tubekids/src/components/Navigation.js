@@ -1,32 +1,60 @@
 import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { logout } from '../services/UserFunctions';
 
 class Navigation extends Component {
+  constructor() {
+    super();
+    this.state = { error: '' };
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout(e) {
+    e.preventDefault();
+
+    logout().then(res => {
+      if (res.message) {
+        localStorage.removeItem('userToken');
+        this.props.history.push('/');
+      }
+    });
+  }
+
   render() {
+    const noAuthLinks = (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/register">Register</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/login">Login</Link>
+        </li>
+      </ul>
+    );
+
+    const userLinks = (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/account">Account</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/profiles">Profiles</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/playlist">Playlist</Link>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" href="/" onClick={this.handleLogout}>Logout</a>
+        </li>
+      </ul>
+    );
+
     return (
         <nav className="navbar navbar-expand navbar-dark bg-primary">
             <div className="container">
-              <a className="navbar-brand" href="/"><i className="fas fa-child"></i> Tubekids</a>
+              <Link className="navbar-brand" to="/"><i className="fas fa-child"></i> Tubekids</Link>
               <div className="collapse navbar-collapse">
-                <ul className="navbar-nav ml-auto">
-                  <li className="nav-item active">
-                    <a className="nav-link" href="/register">Register</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/login">Login</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/">Account</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/">Profiles</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/">Playlist</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="/">Logout</a>
-                  </li>
-                </ul>
+                { localStorage.userToken ? userLinks : noAuthLinks }
               </div>
             </div>
         </nav>
@@ -34,4 +62,4 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+export default withRouter(Navigation);
