@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Navigation from './Navigation';
-import Content from './Content';
 
 import './App.css';
 
@@ -17,7 +16,10 @@ class App extends Component {
     return (
       <div className="App">
         <Navigation />
-        <Content body={children}/>
+        
+        <div className="container my-5">
+          {children}
+        </div>
       </div>
     );
   }

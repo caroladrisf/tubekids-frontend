@@ -5,22 +5,22 @@ class Account extends Component {
   constructor() {
     super();
     this.state = {
-        user: {
-          id: 0,
-          name: '',
-          lastname: '',
-          birthdate: '',
-          email: '',
-          email_verified_at: '',
-          country: '',
-          phone: ''
-        },
-        message: '',
-        error: ''
+      user: {
+        id: 0,
+        name: '',
+        lastname: '',
+        birthdate: '',
+        email: '',
+        email_verified_at: '',
+        country: '',
+        phone: ''
+      },
+      message: '',
+      error: ''
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     getUser().then(res => {
       if (res) {
         this.setState({
@@ -49,15 +49,19 @@ class Account extends Component {
                     </tr>
                     <tr>
                         <td className="text-left"><strong>Birthdate:</strong></td>
-                        <td className="text-right">{this.state.user.birthdate}</td>
+                        <td className="text-right">{this.state.user.birthdate && new Date(this.state.user.birthdate).toLocaleDateString()}</td>
                     </tr>
                     <tr>
                         <td className="text-left"><strong>Email Address:</strong></td>
-                        <td className="text-right">{this.state.user.email} { badge }</td>
+                        <td className="text-right">{this.state.user.email} {this.state.user.email && badge}</td>
+                    </tr>
+                    <tr>
+                        <td className="text-left"><strong>Country:</strong></td>
+                        <td className="text-right">{this.state.user.country}</td>
                     </tr>
                     <tr>
                         <td className="text-left"><strong>Phone Number:</strong></td>
-                        <td className="text-right">+{this.state.user.country} {this.state.user.phone}</td>
+                        <td className="text-right">{this.state.user.phone}</td>
                     </tr>
                 </tbody>
             </table>
