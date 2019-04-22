@@ -6,6 +6,7 @@ import Account from './components/Account';
 import Login from './components/Login';
 import Register from './components/Register';
 import Playlist from './components/Playlist';
+import Profiles from './components/Profiles';
 import Home from './components/Home';
 
 const AppRoutes = () =>
@@ -15,6 +16,7 @@ const AppRoutes = () =>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/account" component={Account}/>
             <Route exact path="/playlist" component={Playlist}/>
+            <Route exact path="/profiles" component={Profiles}/>
             <Route exact path="/" component={Home}/>
         </Switch>
     </App>;
