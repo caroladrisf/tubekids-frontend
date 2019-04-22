@@ -20,44 +20,48 @@ class Navigation extends Component {
     });
   }
 
+  navLinks() {
+    if (localStorage.userToken) {
+      return (
+        <ul className="navbar-nav ml-auto">
+          <li className="nav-item">
+            <Link className="nav-link" to="/account">Account</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/profiles">Profiles</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/playlist">Playlist</Link>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/" onClick={this.handleLogout}>Logout</a>
+          </li>
+        </ul>
+      )
+    } else {
+      return (
+        <ul className="navbar-nav ml-auto">
+          <li className="nav-item">
+            <Link className="nav-link" to="/register">Register</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/login">Login</Link>
+          </li>
+        </ul>
+      )
+    }
+  }
+
   render() {
-    const noAuthLinks = (
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/register">Register</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/login">Login</Link>
-        </li>
-      </ul>
-    );
-
-    const userLinks = (
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/account">Account</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/profiles">Profiles</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/playlist">Playlist</Link>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/" onClick={this.handleLogout}>Logout</a>
-        </li>
-      </ul>
-    );
-
     return (
-        <nav className="navbar navbar-expand navbar-dark bg-primary">
-            <div className="container">
-              <Link className="navbar-brand" to="/"><i className="fas fa-child"></i> Tubekids</Link>
-              <div className="collapse navbar-collapse">
-                { localStorage.userToken ? userLinks : noAuthLinks }
-              </div>
+      <nav className="navbar navbar-expand navbar-dark bg-primary">
+          <div className="container">
+            <Link className="navbar-brand" to="/"><i className="fas fa-child"></i> Tubekids</Link>
+            <div className="collapse navbar-collapse">
+              { this.navLinks() }
             </div>
-        </nav>
+          </div>
+      </nav>
     );
   }
 }
