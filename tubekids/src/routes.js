@@ -8,6 +8,7 @@ import Register from './components/Register';
 import Playlist from './components/Playlist';
 import Profiles from './components/Profiles';
 import Home from './components/Home';
+import ConfirmEmail from './components/ConfirmEmail';
 
 const AppRoutes = () =>
     <App>
@@ -18,6 +19,7 @@ const AppRoutes = () =>
             <Route exact path="/playlist" component={Playlist}/>
             <Route exact path="/profiles" component={Profiles}/>
             <Route exact path="/" component={Home}/>
+            <Route exact path="/users/:id/confirm-email" component={ConfirmEmail}/>
         </Switch>
     </App>;
 
