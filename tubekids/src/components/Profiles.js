@@ -6,12 +6,18 @@ class Profiles extends Component {
     constructor() {
         super();
         this.state = {
-            action: 'list'
+            action: 'list',
+            profile: {
+                id: 0
+            }
         }
         this.setAction = this.setAction.bind(this);
     }
 
-    setAction(action) {
+    setAction(action, profile = null) {
+        if (profile) {
+            this.setState({ profile });
+        }
         this.setState({
             action: action
         });
@@ -23,7 +29,7 @@ class Profiles extends Component {
         } else if (this.state.action === 'create') {
             return <ProfileForm setAction={this.setAction} currentAction={this.state.action} />
         } else if (this.state.action === 'update') {
-            return <ProfileForm setAction={this.setAction} currentAction={this.state.action} />
+            return <ProfileForm setAction={this.setAction} currentAction={this.state.action} profile={this.state.profile} />
         }
     }
 

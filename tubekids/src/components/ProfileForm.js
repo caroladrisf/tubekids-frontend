@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { createProfile } from '../services/ProfilesCRUDFunctions';
+import { createProfile, updateProfile } from '../services/ProfilesCRUDFunctions';
 
 class ProfileForm extends Component {
     constructor() {
@@ -24,6 +24,18 @@ class ProfileForm extends Component {
         profile: PropTypes.object
     }
 
+    componentWillMount() {
+        if (this.props.profile) {
+            this.setState({
+                name: this.props.profile.name,
+                username: this.props.profile.username,
+                pin: this.props.profile.pin,
+                age: this.props.profile.age,
+                id: this.props.profile.id
+            });
+        }
+    }
+
     setActionToList() {
         this.props.setAction('list')
     }
@@ -37,6 +49,8 @@ class ProfileForm extends Component {
 
         if (this.props.currentAction === 'create') {
             this.create();
+        } else if (this.props.currentAction === 'update') {
+            this.update();
         }
     }
 
@@ -49,6 +63,24 @@ class ProfileForm extends Component {
         }
 
         createProfile(profile).then(res => {
+            if (res.errors) {
+                this.setState({errors: res.errors});
+            } else {
+                this.setActionToList();
+            }
+        });
+    }
+
+    update() {
+        const profile = {
+            id: this.state.id,
+            name: this.state.name,
+            username: this.state.username,
+            pin: this.state.pin,
+            age: this.state.age
+        }
+
+        updateProfile(profile).then(res => {
             if (res.errors) {
                 this.setState({errors: res.errors});
             } else {
@@ -89,7 +121,7 @@ class ProfileForm extends Component {
             </div>
             <div className="form-row">
                 <div className="col-12 text-right">
-                    <button type="submit" className="btn btn-primary mr-2"><i className="fas fa-times"></i> Save</button>
+                    <button type="submit" className="btn btn-primary mr-2"><i className="fas fa-save"></i> Save</button>
                     <button type="button" className="btn btn-secondary" onClick={this.setActionToList}><i className="fas fa-times"></i> Cancel</button>
                 </div>
             </div>

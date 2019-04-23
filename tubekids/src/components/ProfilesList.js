@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getProfiles } from '../services/ProfilesCRUDFunctions';
+import { getProfiles, deleteProfile } from '../services/ProfilesCRUDFunctions';
 
 class ProfileList extends Component {
     constructor() {
@@ -9,6 +9,8 @@ class ProfileList extends Component {
             profiles: []
         }
         this.setActionToCreate = this.setActionToCreate.bind(this);
+        this.setActionToUpdate = this.setActionToUpdate.bind(this);
+        this.delete = this.delete.bind(this);
     }
 
     static propTypes = {
@@ -16,6 +18,19 @@ class ProfileList extends Component {
     }
 
     componentWillMount() {
+        this.listProfiles()
+    }
+
+    setActionToCreate() {
+        this.props.setAction('create')
+    }
+
+    setActionToUpdate(e) {
+        const i = e.target.attributes['index'].value;
+        this.props.setAction('update', this.state.profiles[i]);
+    }
+
+    listProfiles() {
         getProfiles().then(res => {
             if (res.error) {
                 console.log(res)
@@ -25,12 +40,17 @@ class ProfileList extends Component {
         });
     }
 
-    setActionToCreate() {
-        this.props.setAction('create')
+    delete(e) {
+        const id = e.target.attributes['data-id'].value;
+        deleteProfile(id).then(res => {
+            if (res) {
+                this.listProfiles()
+            }
+        });
     }
 
     render() {
-        const profiles = this.state.profiles.map((profile) => 
+        const profiles = this.state.profiles.map((profile, index) => 
             <tr key={profile.id}>
                 <td>{profile.name}</td>
                 <td>{profile.username}</td>
@@ -38,11 +58,11 @@ class ProfileList extends Component {
                 <td>{profile.age}</td>
                 <td>
                     <div className="text-right">
-                        <button className="btn btn-secondary btn-sm mr-2" title="Edit">
-                            <i className="fas fa-pen"></i>
+                        <button className="btn btn-secondary btn-sm mr-2" title="Edit" index={index} onClick={this.setActionToUpdate}>
+                            <i className="fas fa-pen" index={index}></i>
                         </button>
-                        <button className="btn btn-danger btn-sm" title="Delete">
-                            <i className="fas fa-trash"></i>
+                        <button className="btn btn-danger btn-sm" title="Delete" data-id={profile.id} onClick={this.delete}>
+                            <i className="fas fa-trash" data-id={profile.id}></i>
                         </button>
                     </div>
                 </td>
