@@ -1,9 +1,3 @@
 .App {
     font-family: Roboto;
 }
-
-.alert-danger {
-    color: #fbe8e8;
-    background-color: #e43232;
-    border-color: transparent;
-}

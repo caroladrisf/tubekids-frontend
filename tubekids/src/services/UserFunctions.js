@@ -13,6 +13,32 @@ export const register = user => {
         });
 }
 
+export const sendEmail = id => {
+    return API
+        .post(`users/${id}/confirmation-email`)
+        .then(res => {
+            return res.status
+        })
+        .catch(err => {
+            if (err.response) {
+                return err.response.data
+            }
+        });
+}
+
+export const confirmEmail = id => {
+    return API
+        .get(`users/${id}/confirm`)
+          .then(res => {
+                return res.data
+        })
+        .catch(err => {
+            if (err.response) {
+                return false
+            }
+        });
+}
+
 export const login = credentials => {
     return API
         .post('users/session', credentials)

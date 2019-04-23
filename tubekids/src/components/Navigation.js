@@ -13,10 +13,8 @@ class Navigation extends Component {
     e.preventDefault();
 
     logout().then(res => {
-      if (res.message) {
-        localStorage.removeItem('userToken');
-        this.props.history.push('/');
-      }
+      localStorage.removeItem('userToken');
+      this.props.history.push('/');
     });
   }
 
