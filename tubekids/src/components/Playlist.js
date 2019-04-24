@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import VideosList from './VideosList';
 import VideoForm from './VideoForm';
+import VideoCard from './VideoCard';
 
 class Playlist extends Component {
     constructor() {
@@ -35,6 +36,8 @@ class Playlist extends Component {
             return <VideoForm setAction={this.setAction} currentAction={this.state.action} />
         } else if (this.state.action === 'update') {
             return <VideoForm setAction={this.setAction} currentAction={this.state.action} video={this.state.video} />
+        } else if (this.state.action === 'show') {
+            return <VideoCard setAction={this.setAction} video={this.state.video} />
         }
     }
 

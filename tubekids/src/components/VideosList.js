@@ -11,6 +11,7 @@ class VideosList extends Component {
         }
         this.setActionToCreate = this.setActionToCreate.bind(this);
         this.setActionToUpdate = this.setActionToUpdate.bind(this);
+        this.setActionToShow = this.setActionToShow.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.searchVideos = this.searchVideos.bind(this);
         this.delete = this.delete.bind(this);
