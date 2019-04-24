@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { login } from '../services/UserFunctions';
+import { login, sendSMS } from '../services/UserFunctions';
 
 class Login extends Component {
   constructor() {
@@ -29,8 +29,17 @@ class Login extends Component {
       if (res.error) {
         this.setState({ error: res.error });
       } else if (res.token) {
-        localStorage.setItem('userToken', res.token);
-        this.props.history.push('/');
+        localStorage.setItem('loginToken', res.token);
+        localStorage.setItem('userId', res.user.id);
+        sendSMS().then(res => {
+          if (res.error) {
+            console.log(res.error)
+          } else if (res.exception) {
+            console.log(res.exception)
+          } else {
+            this.props.history.push('/verify-code');
+          }
+        });
       }
     });
   }

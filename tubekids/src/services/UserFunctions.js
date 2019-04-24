@@ -54,6 +54,36 @@ export const login = credentials => {
         });
 }
 
+export const sendSMS = () => {
+    return API
+        .post(`users/${localStorage.getItem('userId')}/sms`, {}, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('loginToken')}` }
+        })
+        .then(res => {
+            return res.status
+        })
+        .catch(err => {
+            if (err.response) {
+                return err.response.data
+            }
+        });
+}
+
+export const verifyCode = code => {
+    return API
+        .put(`users/${localStorage.getItem('userId')}/code`, {code}, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('loginToken')}` }
+        })
+        .then(res => {
+            return res.data
+        })
+        .catch(err => {
+            if (err.response) {
+                return err.response.data
+            }
+        });
+}
+
 export const getUser = () => {
     return API
         .get('user', {
