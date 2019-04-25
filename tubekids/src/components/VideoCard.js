@@ -4,14 +4,6 @@ import PropTypes from 'prop-types';
 class VideoForm extends Component {
     constructor() {
         super();
-        this.state = {
-            name: '',
-            type: 'Youtube Video',
-            url: '',
-            file: '',
-            id: 0,
-            errors: {}
-        };
         this.setActionToList = this.setActionToList.bind(this);
     }
 
@@ -24,6 +16,20 @@ class VideoForm extends Component {
         this.props.setAction('list')
     }
 
+    video() {
+        if (this.props.video.type === 'Youtube Video') {
+            return (
+                <iframe width="420" height="315" src={this.props.video.url} title={this.props.video.url}></iframe>
+            )
+        } else {
+            return (
+                <video width="420" height="315" controls>
+                    <source src={this.props.video.url} type="video/mp4"></source>
+                </video>
+            )
+        }
+    }
+
     render() {
         return (
         <div className="card my-3">
@@ -34,7 +40,7 @@ class VideoForm extends Component {
                 </h5>
             </div>
             <div className="d-flex justify-content-center pb-4">
-                <iframe width="420" height="315" src={this.props.video.url} title={this.props.video.url}></iframe>
+                {this.video()}
             </div>
         </div>
         );

@@ -13,10 +13,10 @@ class VideoForm extends Component {
             id: 0,
             errors: {}
         };
-        this.fileInput = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleChecked = this.handleChecked.bind(this);
+        this.handleFile = this.handleFile.bind(this);
         this.setActionToList = this.setActionToList.bind(this);
     }
 
@@ -48,14 +48,26 @@ class VideoForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        console.log(
-            this.fileInput.current.files[0]
-        );
+        let video = null;
+
+        if (this.state.type === 'Youtube Video') {
+            video = {
+                name: this.state.name,
+                type: this.state.type,
+                url: this.state.url
+            }
+        } else {
+            video = new FormData();
+
+            video.append('name', this.state.name)
+            video.append('type', this.state.type)
+            video.append('file', this.state.file)
+        }
 
         if (this.props.currentAction === 'create') {
-            this.create();
+            this.create(video);
         } else if (this.props.currentAction === 'update') {
-            this.update();
+            this.update(video);
         }
     }
 
@@ -63,18 +75,11 @@ class VideoForm extends Component {
         this.setState({ type: e.target.value });
     }
 
-    create() {
-        let video = {
-            name: this.state.name,
-            type: this.state.type
-        }
+    handleFile(e) {
+        this.setState({ file: e.target.files[0]})
+    }
 
-        if (video.type === 'Youtube Video') {
-            video.url = this.state.url
-        } else {
-            video.file = this.fileInput.current.files[0]
-        }
-
+    create(video) {
         createVideo(video).then(res => {
             if (res.errors) {
                 this.setState({errors: res.errors});
@@ -84,19 +89,7 @@ class VideoForm extends Component {
         });
     }
 
-    update() {
-        let video = {
-            name: this.state.name,
-            type: this.state.type,
-            id: this.state.id
-        }
-
-        if (video.type === 'Youtube Video') {
-            video.url = this.state.url
-        } else {
-            video.file = this.fileInput.current.files[0]
-        }
-
+    update(video) {
         updateVideo(video).then(res => {
             if (res.errors) {
                 this.setState({errors: res.errors});
@@ -134,7 +127,7 @@ class VideoForm extends Component {
             </div>
             <div className="form-group">
                 <label htmlFor="file"><i className="fas fa-file-video"></i> File</label>
-                <input type="file" accept="video/*" name="file" className="form-control-file" ref={this.fileInput} />
+                <input type="file" accept="video/*" name="file" className="form-control-file" onChange={this.handleFile} />
             </div>
             <div className="form-row">
                 <div className="col-12 text-right">
