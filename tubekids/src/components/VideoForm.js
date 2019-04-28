@@ -90,6 +90,7 @@ class VideoForm extends Component {
     }
 
     update(video) {
+        video.id = this.state.id;
         updateVideo(video).then(res => {
             if (res.errors) {
                 this.setState({errors: res.errors});
@@ -100,6 +101,21 @@ class VideoForm extends Component {
     }
 
     render() {
+        const inputForVideo = this.state.type === 'Youtube Video' ? 
+        (
+            <div className="form-group">
+                <label htmlFor="url"><i className="fab fa-youtube"></i> URL</label>
+                <input type="url" name="url" className="form-control" value={this.state.url} onChange={this.handleInputChange} />
+                <small className="text-danger">{this.state.errors.url && this.state.errors.url[0]}</small>
+            </div>
+            
+        ) : (
+            <div className="form-group">
+                <label htmlFor="file"><i className="fas fa-file-video"></i> File</label>
+                <input type="file" accept="video/*" name="file" className="form-control-file" onChange={this.handleFile} />
+            </div>
+        );
+
         return (
         <form className="w-75 mx-auto mt-4" onSubmit={this.handleSubmit}>
             <div className="form-group">
@@ -120,15 +136,7 @@ class VideoForm extends Component {
                 </div>
                 <small className="text-danger">{this.state.errors.type && this.state.errors.type[0]}</small>
             </div>
-            <div className="form-group">
-                <label htmlFor="url"><i className="fab fa-youtube"></i> URL</label>
-                <input type="url" name="url" className="form-control" value={this.state.url} onChange={this.handleInputChange} />
-                <small className="text-danger">{this.state.errors.url && this.state.errors.url[0]}</small>
-            </div>
-            <div className="form-group">
-                <label htmlFor="file"><i className="fas fa-file-video"></i> File</label>
-                <input type="file" accept="video/*" name="file" className="form-control-file" onChange={this.handleFile} />
-            </div>
+            {inputForVideo}
             <div className="form-row">
                 <div className="col-12 text-right">
                     <button type="submit" className="btn btn-primary mr-2"><i className="fas fa-save"></i> Save</button>
